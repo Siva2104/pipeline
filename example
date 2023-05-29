@@ -1,0 +1,22 @@
+from sklearn.impute import SimpleImputer
+## numerical processing pipeline
+import numpy as np
+numeric_processor=Pipeline(
+    steps=[("imputation_mean",SimpleImputer(missing_values=np.nan,strategy="mean")),
+          ("scaler",StandardScaler())]
+
+)
+from sklearn.preprocessing import OneHotEncoder
+categorical_processor=Pipeline(
+    steps=[("imputation_consatnt",SimpleImputer(fill_value="missing",strategy="constant")),
+          ("onehot",OneHotEncoder(handle_unknown="ignore"))]
+
+)
+## combine processing technqiues
+from sklearn.compose import ColumnTransformer
+preprocessor=ColumnTransformer(
+    [("categorical",categorical_processor,["gender","City"]),
+    ("numerical",numeric_processor,["age","height"])]
+
+
+)
